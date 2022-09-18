@@ -22,10 +22,11 @@ async function run() {
 
 
         // API 
-        
+
 
     }
     finally{
+        console.log("Testing")
 
     }
 }
