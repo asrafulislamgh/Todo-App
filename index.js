@@ -29,7 +29,7 @@ async function run() {
             const result = await cursor.toArray();
             res.json(result);
         })
-        // Post API 
+        // Post API     
         app.post("/alltasks", async (req, res)=> {
             const cursor = req.body;
             const result = await taskCollections.insertOne(cursor); 
@@ -70,16 +70,9 @@ async function run() {
 run().catch(console.dir);
 
 
-
-
-
-
 app.get("/", (req, res)=>{
     res.send("Bismillahir Rahmanir rahim. Alhamdulillah")
 })
-
-
-
 
 
 app.listen(port, ()=>{
