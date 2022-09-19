@@ -19,14 +19,51 @@ async function run() {
     try {
         await client.connect();
         const database = client.db("todo_db");
+        const taskCollections = database.collection("todo_collection");
 
 
         // API 
+        // Get API 
+        app.get("/alltasks", async (req, res)=> {
+            const cursor = taskCollections.find({});
+            const result = await cursor.toArray();
+            res.json(result);
+        })
+        // Post API 
+        app.post("/alltasks", async (req, res)=> {
+            const cursor = req.body;
+            const result = await taskCollections.insertOne(cursor); 
+            res.json(result)
+            console.log("data inserted:", result)
+        })
+
+        // Delete API 
+        app.delete("/alltasks/:id", async (req, res)=> {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)}
+            const result = await taskCollections.deleteOne(query);
+            res.json(result)
+            console.log("deleted id:", result)
+        })
+        // Updating API 
+        app.put("/alltasks/:id", async (req, res)=> {
+            const id = req.params.id;
+            const data = req.body;
+            const query = {_id: ObjectId(id)}
+            const updatedDoc = {
+                $set: {
+                    taskName: data.taskName,
+                    time: data.time,
+                }
+            }
+            const result = await taskCollections.updateOne(query, updatedDoc);
+            res.json(result)
+            console.log("Updated id:", data)
+        })
 
 
     }
     finally{
-        console.log("Testing")
 
     }
 }
@@ -38,7 +75,7 @@ run().catch(console.dir);
 
 
 app.get("/", (req, res)=>{
-    res.send("Bismillahir Rahmanir rahim")
+    res.send("Bismillahir Rahmanir rahim. Alhamdulillah")
 })
 
 
